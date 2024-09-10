@@ -80,13 +80,13 @@ class TagController extends Controller
             return response()->json([
                 'success' => true,
                 'result' => $tags,
-                'message' => 'Tags retrieved successfully'
+                'message' => __('messages.tags_retrieved_successfully'),
 
             ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred while retrieving tags',
+                'message' => __('messages.error_retrieving_tags'),
                 'result' => []
             ], 500);
         }

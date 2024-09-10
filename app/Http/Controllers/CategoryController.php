@@ -80,17 +80,18 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
+
         try {
             $categories = Category::all();
             return response()->json([
                 'success' => true,
                 'result' => $categories,
-                'message' => 'Categories retrieved successfully',
+                'message' => __('messages.categories_retrieved_successfully'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'An error occurred while retrieving categories',
+                'message' => __('messages.error_retrieving_categories'),
                 'result' => []
             ], 500);
         }
