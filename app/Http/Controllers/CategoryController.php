@@ -84,13 +84,13 @@ class CategoryController extends Controller
         try {
             $categories = Category::all();
             return response()->json([
-                'success' => true,
+                'success' => 1,
                 'result' => $categories,
                 'message' => __('messages.categories_retrieved_successfully'),
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
+                'success' => 0,
                 'message' => __('messages.error_retrieving_categories'),
                 'result' => []
             ], 500);

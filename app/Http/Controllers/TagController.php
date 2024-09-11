@@ -78,14 +78,14 @@ class TagController extends Controller
         try {
             $tags = Tag::all();
             return response()->json([
-                'success' => true,
+                'success' => 1,
                 'result' => $tags,
                 'message' => __('messages.tags_retrieved_successfully'),
 
             ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
+                'success' => 0,
                 'message' => __('messages.error_retrieving_tags'),
                 'result' => []
             ], 500);
