@@ -10,5 +10,6 @@ return [
     'logout_success' => 'Logout successful.',
     'invalid_credentials' => 'Invalid credentials.',
     'some_thing_worng' => 'Something went wrong, thanks for trying back later!',
-    'user_not_found'=>'User not found',
+    'user_not_found' => 'User not found',
+    'products_retrieved_successfully' => 'Products retrieved successfully.',
 ];
