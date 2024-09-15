@@ -9,7 +9,7 @@ class ProductController extends Controller
 {
     public function getAllProducts()
     {
-        $products = Product::with('tags')->get();
+        $products = Product::with('tags', 'category')->get();
         return response()->json([
             'success' => 1,
             'result' => $products,
@@ -28,7 +28,7 @@ class ProductController extends Controller
     }
     public function getProductsByTag($tagId)
     {
-        $products = Product::whereHas('tags', function ($query) use ($tagId) {
+        $products = Product::with('category')->whereHas('tags', function ($query) use ($tagId) {
             $query->where('tag_id', $tagId);
         })->paginate(10);
         return response()->json([
@@ -63,5 +63,16 @@ class ProductController extends Controller
             'result' => $products,
             'message' => __('messages.products_retrieved_successfully'),
         ], 200);
+    }
+    public function getHeroProducts()
+    {
+        $heroProducts = Product::with('tags', 'category')->where('is_hero', true)
+            ->get();
+
+        return response()->json([
+            'success' => 1,
+            'result' => $heroProducts,
+            'message' => __('messages.success'),
+        ]);
     }
 }

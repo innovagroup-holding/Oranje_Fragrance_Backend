@@ -12,4 +12,7 @@ return [
     'some_thing_worng' => 'Something went wrong, thanks for trying back later!',
     'user_not_found' => 'User not found',
     'products_retrieved_successfully' => 'Products retrieved successfully.',
+    'success' => 'Success',
+    'failed uploded' => 'Upload Failed',
+    'failed' => 'Failed!'
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -127,5 +128,31 @@ class AuthController extends Controller
                 'result' => []
             ], 500);
         }
+    }
+
+
+    public function getUser(Request $request)
+    {
+        $user = null;
+
+        $token = $request->bearerToken();
+
+        if ($token) {
+            try {
+                $user = auth()->user();
+            } catch (\Exception $e) {
+                error_log('Invalid token: ' . $e->getMessage());
+            }
+        }
+        $recommendedProducts = Product::with('tags')
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
+        $res = ['recommendedProducts' => $recommendedProducts, 'user' => $user];
+        return response()->json([
+            'success' => 1,
+            'result' => $res,
+            'message' => __('messages.success'),
+        ], 200);
     }
 }
