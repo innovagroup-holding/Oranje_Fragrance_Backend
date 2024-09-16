@@ -14,11 +14,12 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::get('/get_categories', [CategoryController::class, 'getCategories']);
     Route::get('/get_tags', [TagController::class, 'getTags']);
 
-    Route::get('products', [ProductController::class, 'getAllProducts']);
-    Route::get('products/category/{categoryId}', [ProductController::class, 'getProductsByCategory']);
-    Route::get('products/tag/{tagId}', [ProductController::class, 'getProductsByTag']);
-    Route::get('products_by_category_tag', [ProductController::class, 'getProductsByCategoryAndTag']);
-    Route::get('hero_products', [ProductController::class, 'getHeroProducts']);
+    // Route::get('products', [ProductController::class, 'getAllProducts']);
+    // Route::get('products/category/{categoryId}', [ProductController::class, 'getProductsByCategory']);
+    // Route::get('products/tag/{tagId}', [ProductController::class, 'getProductsByTag']);
+    // Route::get('products_by_category_tag', [ProductController::class, 'getProductsByCategoryAndTag']);
+    // Route::get('hero_products', [ProductController::class, 'getHeroProducts']);
+    Route::get('products', [ProductController::class, 'getProducts']);
 
     Route::get('get_user_data', [AuthController::class, 'getUser']);
     Route::post('/signup', [AuthController::class, 'signup']);
