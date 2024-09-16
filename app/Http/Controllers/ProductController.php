@@ -106,8 +106,7 @@ class ProductController extends Controller
             $query->where('is_hero', true);
         }
 
-
-        $query->with('tags', 'category');
+        $query->with(['tags', 'category', 'images']);
 
 
         if ($limit) {
