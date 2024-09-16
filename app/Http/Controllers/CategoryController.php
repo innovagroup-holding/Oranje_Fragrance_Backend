@@ -70,7 +70,7 @@ class CategoryController extends Controller
                 'success' => 0,
                 'message' => __('messages.category_not_found'),
                 'result' => []
-            ]);
+            ], 404);
         }
 
         return response()->json([

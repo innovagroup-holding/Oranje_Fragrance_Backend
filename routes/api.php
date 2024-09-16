@@ -17,8 +17,9 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::delete('categories', [CategoryController::class, 'destroy']);
 
 
-
+    Route::post('tags', [TagController::class, 'storeTag']);
     Route::get('/get_tags', [TagController::class, 'getTags']);
+    Route::delete('tags', [TagController::class, 'destroy']);
 
 
     Route::get('products', [ProductController::class, 'getProducts']);

@@ -2,43 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductTag;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Exception;
 
 class TagController extends Controller
 {
-    public function index()
+
+    public function storeTag(Request $request)
     {
-        try {
-            $tags = Tag::all();
-            return view('tags.index', compact('tags'));
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while fetching tags.');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image'
+        ]);
+
+        $tag = new Tag();
+        $tag->name = $request->name;
+
+        if ($request->hasFile('image')) {
+            $originalFileName = $request->file('image')->getClientOriginalName();
+            $image = $request->file('image')->storeAs('images/tags', $originalFileName, 'public');
+            $tag->image = 'storage/' . $image;
         }
-    }
 
-    public function store(Request $request)
-    {
-        try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'image' => 'nullable|image'
-            ]);
+        $tag->save();
 
-            $tag = new Tag;
-            $tag->name = $request->name;
-
-            if ($request->hasFile('image')) {
-                $tag->image = $request->file('image')->store('images/tags');
-            }
-
-            $tag->save();
-
-            return redirect()->route('tags.index')->with('success', 'Tag created successfully');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while creating the tag.');
-        }
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.tag_created_successfully'),
+            'result' => $tag
+        ], 201);
     }
 
     public function update(Request $request, Tag $tag)
@@ -63,13 +57,30 @@ class TagController extends Controller
         }
     }
 
-    public function destroy(Tag $tag)
+    public function destroy(Request $request)
     {
-        try {
+        $tag = Tag::find($request->id);
+
+        if ($tag) {
+            $products = ProductTag::where('tag_id', $tag->id)->get();
+
+            foreach ($products as $productTag) {
+                $productTag->delete();
+            }
+
             $tag->delete();
-            return redirect()->route('tags.index')->with('success', 'Tag deleted successfully');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while deleting the tag.');
+
+            return response()->json([
+                'success' => 1,
+                'message' => __('messages.tag_deleted_successfully'),
+                'result' => []
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => 0,
+                'message' => __('messages.tag_not_found'),
+                'result' => []
+            ], 404);
         }
     }
 
