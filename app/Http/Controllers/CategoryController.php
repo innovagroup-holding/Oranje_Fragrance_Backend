@@ -8,42 +8,31 @@ use Exception;
 
 class CategoryController extends Controller
 {
-    public function index()
+
+
+    public function storeCategory(Request $request)
     {
-        try {
-            $categories = Category::all();
-            return view('categories.index', compact('categories'));
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while fetching categories.');
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image'
+        ]);
+
+        $category = new Category;
+        $category->name = $request->name;
+
+        if ($request->hasFile('image')) {
+            $originalFileName = $request->file('image')->getClientOriginalName();
+            $image = $request->file('image')->storeAs('images/categories', $originalFileName, 'public');
+            $category->image = 'storage/' . $image;
         }
-    }
-    public function create()
-    {
-        return view('categories.create');
-    }
 
-    public function store(Request $request)
-    {
-        try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'image' => 'nullable|image'
-            ]);
+        $category->save();
 
-            $category = new Category;
-            $category->name = $request->name;
-
-            if ($request->hasFile('image')) {
-                $category->image = $request->file('image')->store('images/categories');
-                // $path = $request->file('image')->store('categories', 'public');
-            }
-
-            $category->save();
-
-            return redirect()->route('categories.index')->with('success', 'Category created successfully');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while creating the category.');
-        }
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.category_created_successfully'),
+            'result' => $category
+        ], 201);
     }
 
     public function update(Request $request, Category $category)
@@ -68,15 +57,29 @@ class CategoryController extends Controller
         }
     }
 
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
-        try {
+
+        $category = Category::find($request->id);
+        if ($category) {
+            $category->products()->delete();
+
             $category->delete();
-            return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'An error occurred while deleting the category.');
+        } else {
+            return response()->json([
+                'success' => 0,
+                'message' => __('messages.category_not_found'),
+                'result' => []
+            ]);
         }
+
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.category_deleted_successfully'),
+            'result' => []
+        ], 200);
     }
+
 
     public function getCategories()
     {

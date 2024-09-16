@@ -14,5 +14,6 @@ return [
     'products_retrieved_successfully' => 'Products retrieved successfully.',
     'success' => 'Success',
     'failed uploded' => 'Upload Failed',
-    'failed' => 'Failed!'
+    'failed' => 'Failed!',
+    'category_created_successfully' => 'Category Created Successfully'
 ];

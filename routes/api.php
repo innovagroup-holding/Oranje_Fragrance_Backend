@@ -11,14 +11,16 @@ use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([LanguageMiddleware::class])->group(function () {
+
+    Route::post('categories', [CategoryController::class, 'storeCategory']);
     Route::get('/get_categories', [CategoryController::class, 'getCategories']);
+    Route::delete('categories', [CategoryController::class, 'destroy']);
+
+
+
     Route::get('/get_tags', [TagController::class, 'getTags']);
 
-    // Route::get('products', [ProductController::class, 'getAllProducts']);
-    // Route::get('products/category/{categoryId}', [ProductController::class, 'getProductsByCategory']);
-    // Route::get('products/tag/{tagId}', [ProductController::class, 'getProductsByTag']);
-    // Route::get('products_by_category_tag', [ProductController::class, 'getProductsByCategoryAndTag']);
-    // Route::get('hero_products', [ProductController::class, 'getHeroProducts']);
+
     Route::get('products', [ProductController::class, 'getProducts']);
 
     Route::get('get_user_data', [AuthController::class, 'getUser']);
@@ -35,3 +37,12 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
     });
 });
+
+
+
+
+    // Route::get('products', [ProductController::class, 'getAllProducts']);
+    // Route::get('products/category/{categoryId}', [ProductController::class, 'getProductsByCategory']);
+    // Route::get('products/tag/{tagId}', [ProductController::class, 'getProductsByTag']);
+    // Route::get('products_by_category_tag', [ProductController::class, 'getProductsByCategoryAndTag']);
+    // Route::get('hero_products', [ProductController::class, 'getHeroProducts']);
