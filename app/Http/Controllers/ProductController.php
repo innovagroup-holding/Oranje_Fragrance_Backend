@@ -77,22 +77,22 @@ class ProductController extends Controller
     // }
     public function getProducts(Request $request)
     {
-        // Extract parameters from the request
+
         $categoryId = $request->query('category');
         $tagId = $request->query('tag');
-        $limit = $request->query('limit'); // Default limit is 10
-        $isHero = $request->query('only_hero_products', false); // Default is_hero is false
+        $limit = $request->query('limit');
+        $isHero = $request->query('only_hero_products', false);
 
-        // Build the query
+
         $query = Product::query();
 
-        // Filter by category if provided
+
         if ($categoryId) {
             error_log('category_id');
             $query->where('category_id', $categoryId);
         }
 
-        // Filter by tag if provided
+
         if ($tagId) {
             error_log('tag_id');
             $query->whereHas('tags', function ($tagQuery) use ($tagId) {
@@ -100,25 +100,25 @@ class ProductController extends Controller
             });
         }
 
-        // Filter by hero products if requested
+
         if ($isHero) {
             error_log('is_hero');
             $query->where('is_hero', true);
         }
 
-        // Set the relationship to be eager loaded
+
         $query->with('tags', 'category');
 
-        // Get the results with the specified limit or pagination
+
         if ($limit) {
             error_log('limit');
             $products = $query->limit($limit)->get();
         } else {
             error_log('paginate');
-            $products = $query->paginate(10); // Default pagination
+            $products = $query->paginate(10);
         }
 
-        // Return the JSON response
+
         return response()->json([
             'success' => 1,
             'result' => $products,
