@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductTag;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -184,6 +185,92 @@ class ProductController extends Controller
             'success' => 1,
             'result' => $product,
             'message' => __('messages.product_retrieved_successfully')
+        ], 200);
+    }
+    public function updateProduct(Request $request)
+    {
+        $product = Product::find($request->id);
+
+        if (!$product) {
+            return response()->json([
+                'success' => 0,
+                'message' => __('messages.product_not_found')
+            ], 404);
+        }
+
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric|min:0',
+            'category_id' => 'sometimes|exists:categories,id',
+            'new_images.*' => 'nullable|image',
+            'deleted_image_ids' => 'nullable|string'
+        ]);
+
+        if ($request->has('name')) {
+            $product->name = $request->name;
+        }
+
+        if ($request->has('price')) {
+            $product->price = $request->price;
+        }
+
+        if ($request->has('category_id')) {
+            $product->category_id = $request->category_id;
+        }
+
+        $product->save();
+
+        if ($request->has('deleted_image_ids')) {
+
+            $deletedImageIds = explode(',', $request->deleted_image_ids);
+
+            ProductImage::whereIn('id', $deletedImageIds)->where('product_id', $product->id)->delete();
+        }
+
+        if ($request->hasFile('new_images')) {
+            foreach ($request->file('new_images') as $image) {
+                $originalFileName = $image->getClientOriginalName();
+                $path = $image->storeAs('images/products', $originalFileName, 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => 'storage/' . $path
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.product_updated_successfully'),
+            'result' => $product->load('images')
+        ], 200);
+    }
+    public function deleteProduct(Request $request)
+    {
+
+        $product = Product::find($request->id);
+
+
+        if (!$product) {
+            return response()->json([
+                'success' => 0,
+                'result' => [],
+                'message' => __('messages.product_not_found')
+            ], 404);
+        }
+
+
+        ProductTag::where('product_id', $request->id)->delete();
+        ProductImage::where('product_id', $request->id)->delete();
+
+
+
+        $product->delete();
+
+
+        return response()->json([
+            'success' => 1,
+            'result' => [],
+            'message' => __('messages.product_deleted_successfully')
         ], 200);
     }
 }

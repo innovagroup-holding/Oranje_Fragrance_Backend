@@ -18,5 +18,6 @@ return [
     'category_created_successfully' => 'Category Created Successfully',
     'product_created_successfully' => 'Product Created Successfully',
     'product_retrieved_successfully' => 'Product Retrieved Successfully',
-    'product_not_found' => 'Product Not Found'
+    'product_not_found' => 'Product Not Found',
+    'product_deleted_successfully' => 'Product Deleted Successfully'
 ];

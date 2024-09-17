@@ -25,6 +25,8 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::get('products', [ProductController::class, 'getProducts']);
     Route::post('products', [ProductController::class, 'storeProduct']);
     Route::get('get_product', [ProductController::class, 'getProduct']);
+    Route::post('products', [ProductController::class, 'updateProduct']);
+    Route::delete('products', [ProductController::class, 'deleteProduct']);
 
     Route::get('get_user_data', [AuthController::class, 'getUser']);
     Route::post('/signup', [AuthController::class, 'signup']);
