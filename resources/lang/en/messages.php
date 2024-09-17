@@ -15,5 +15,6 @@ return [
     'success' => 'Success',
     'failed uploded' => 'Upload Failed',
     'failed' => 'Failed!',
-    'category_created_successfully' => 'Category Created Successfully'
+    'category_created_successfully' => 'Category Created Successfully',
+    'product_created_successfully' => 'Product Created Successfully'
 ];
