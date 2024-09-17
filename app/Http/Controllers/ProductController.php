@@ -165,4 +165,25 @@ class ProductController extends Controller
             'result' => $product
         ], 200);
     }
+    public function getProduct(Request $request)
+    {
+
+        $product = Product::with(['tags', 'category', 'images'])->find($request->id);
+
+
+        if (!$product) {
+            return response()->json([
+                'success' => 0,
+                'result' => [],
+                'message' => __('messages.product_not_found')
+            ], 404);
+        }
+
+
+        return response()->json([
+            'success' => 1,
+            'result' => $product,
+            'message' => __('messages.product_retrieved_successfully')
+        ], 200);
+    }
 }
