@@ -16,7 +16,6 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::get('/get_categories', [CategoryController::class, 'getCategories']);
     Route::delete('categories', [CategoryController::class, 'destroy']);
 
-
     Route::post('tags', [TagController::class, 'storeTag']);
     Route::get('/get_tags', [TagController::class, 'getTags']);
     Route::delete('tags', [TagController::class, 'destroy']);
@@ -27,6 +26,9 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::get('get_product', [ProductController::class, 'getProduct']);
     Route::post('products', [ProductController::class, 'updateProduct']);
     Route::delete('products', [ProductController::class, 'deleteProduct']);
+    Route::post('products/add-tag', [ProductController::class, 'addTagToProduct']);
+    Route::post('products/remove-tag', [ProductController::class, 'removeTagFromProduct']);
+    Route::post('products/add-discount', [ProductController::class, 'addDiscountToProduct']);
 
     Route::get('get_user_data', [AuthController::class, 'getUser']);
     Route::post('/signup', [AuthController::class, 'signup']);

@@ -124,7 +124,6 @@ class ProductController extends Controller
             'message' => __('messages.products_retrieved_successfully'),
         ], 200);
     }
-
     public function storeProduct(Request $request)
     {
         $request->validate([
@@ -203,6 +202,7 @@ class ProductController extends Controller
             'price' => 'sometimes|numeric|min:0',
             'category_id' => 'sometimes|exists:categories,id',
             'new_images.*' => 'nullable|image',
+            'discount_percentage' => 'sometimes|numeric|min:0|max:100',
             'deleted_image_ids' => 'nullable|string'
         ]);
 
@@ -217,7 +217,18 @@ class ProductController extends Controller
         if ($request->has('category_id')) {
             $product->category_id = $request->category_id;
         }
+        if ($request->has('discount_percentage')) {
+            $product->discount_percentage = $request->discount_percentage;
 
+
+            if ($product->discount_percentage > 0 && $product->price > 0) {
+                $discountAmount = ($product->price * $product->discount_percentage) / 100;
+                $product->price_after_discount = $product->price - $discountAmount;
+            } else {
+
+                $product->price_after_discount = $product->price;
+            }
+        }
         $product->save();
 
         if ($request->has('deleted_image_ids')) {
@@ -271,6 +282,67 @@ class ProductController extends Controller
             'success' => 1,
             'result' => [],
             'message' => __('messages.product_deleted_successfully')
+        ], 200);
+    }
+    public function addTagToProduct(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'tag_id' => 'required|exists:tags,id'
+        ]);
+
+        $product = Product::find($request->product_id);
+
+        $product->tags()->attach($request->tag_id);
+
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.tag_added_successfully'),
+            'result' => $product->load('tags')
+        ], 200);
+    }
+
+    public function removeTagFromProduct(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'tag_id' => 'required|exists:tags,id'
+        ]);
+
+        $product = Product::find($request->product_id);
+
+        $product->tags()->detach($request->tag_id);
+
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.tag_removed_successfully'),
+            'result' => $product->load('tags')
+        ], 200);
+    }
+    public function addDiscountToProduct(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'discount_percentage' => 'required|numeric|min:0|max:100'
+        ]);
+
+        $product = Product::find($request->product_id);
+
+        $product->discount_percentage = $request->discount_percentage;
+
+        if ($product->price > 0 && $product->discount_percentage > 0) {
+            $discountAmount = ($product->price * $product->discount_percentage) / 100;
+            $product->price_after_discount = $product->price - $discountAmount;
+        } else {
+            $product->price_after_discount = $product->price;
+        }
+
+        $product->save();
+
+        return response()->json([
+            'success' => 1,
+            'message' => __('messages.discount_added_successfully'),
+            'result' => $product
         ], 200);
     }
 }

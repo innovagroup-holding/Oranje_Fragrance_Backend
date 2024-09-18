@@ -19,5 +19,9 @@ return [
     'product_created_successfully' => 'Product Created Successfully',
     'product_retrieved_successfully' => 'Product Retrieved Successfully',
     'product_not_found' => 'Product Not Found',
-    'product_deleted_successfully' => 'Product Deleted Successfully'
+    'product_deleted_successfully' => 'Product Deleted Successfully',
+    'tag_added_successfully' => 'Tag Added Successfully',
+    'tag_removed_successfully' => 'Tag Removed Successfully',
+    'discount_added_successfully' => 'Discount Added Successfully',
+    'product_updated_successfully' => 'Product Updated Successfully'
 ];
