@@ -23,5 +23,9 @@ return [
     'tag_added_successfully' => 'Tag Added Successfully',
     'tag_removed_successfully' => 'Tag Removed Successfully',
     'discount_added_successfully' => 'Discount Added Successfully',
-    'product_updated_successfully' => 'Product Updated Successfully'
+    'product_updated_successfully' => 'Product Updated Successfully',
+    'banners_retrieved_successfully' => 'Banners Retrieved Successfully',
+    'entity_not_found' => 'Entity Not Found',
+    'banner_created_successfully' => 'Banner Created Successfully'
+
 ];

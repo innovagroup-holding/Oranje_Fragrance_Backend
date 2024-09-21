@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SponsorController;
@@ -19,6 +20,11 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::post('tags', [TagController::class, 'storeTag']);
     Route::get('/get_tags', [TagController::class, 'getTags']);
     Route::delete('tags', [TagController::class, 'destroy']);
+
+
+    Route::get('banners', [BannerController::class, 'getBanners']);
+    Route::post('banners', [BannerController::class, 'storeBanner']);
+
 
 
     Route::get('products', [ProductController::class, 'getProducts']);
