@@ -26,6 +26,7 @@ return [
     'product_updated_successfully' => 'Product Updated Successfully',
     'banners_retrieved_successfully' => 'Banners Retrieved Successfully',
     'entity_not_found' => 'Entity Not Found',
-    'banner_created_successfully' => 'Banner Created Successfully'
+    'banner_created_successfully' => 'Banner Created Successfully',
+    'order_created_successfully' => 'Order Created Successfully'
 
 ];

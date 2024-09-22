@@ -188,6 +188,7 @@ class ProductController extends Controller
     }
     public function updateProduct(Request $request)
     {
+
         $product = Product::find($request->id);
 
         if (!$product) {
@@ -196,7 +197,6 @@ class ProductController extends Controller
                 'message' => __('messages.product_not_found')
             ], 404);
         }
-
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'price' => 'sometimes|numeric|min:0',
@@ -205,6 +205,7 @@ class ProductController extends Controller
             'discount_percentage' => 'sometimes|numeric|min:0|max:100',
             'deleted_image_ids' => 'nullable|string'
         ]);
+
 
         if ($request->has('name')) {
             $product->name = $request->name;

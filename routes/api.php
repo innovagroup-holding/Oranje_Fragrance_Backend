@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TagController;
@@ -25,12 +26,14 @@ Route::middleware([LanguageMiddleware::class])->group(function () {
     Route::get('banners', [BannerController::class, 'getBanners']);
     Route::post('banners', [BannerController::class, 'storeBanner']);
 
+    Route::post('cart/add', [OrderController::class, 'addToCart']);
+
 
 
     Route::get('products', [ProductController::class, 'getProducts']);
     Route::post('products', [ProductController::class, 'storeProduct']);
     Route::get('get_product', [ProductController::class, 'getProduct']);
-    Route::post('products', [ProductController::class, 'updateProduct']);
+    Route::post('update_product', [ProductController::class, 'updateProduct']);
     Route::delete('products', [ProductController::class, 'deleteProduct']);
     Route::post('products/add-tag', [ProductController::class, 'addTagToProduct']);
     Route::post('products/remove-tag', [ProductController::class, 'removeTagFromProduct']);
