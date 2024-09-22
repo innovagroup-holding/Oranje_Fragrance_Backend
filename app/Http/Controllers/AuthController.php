@@ -22,11 +22,11 @@ class AuthController extends Controller
             'agreed_privacy_policy' => 'required|boolean',
             'agreed_terms_of_use' => 'required|boolean',
             'password' => 'required|string|min:8',
-            'house_number' => 'required|string|max:10',
-            'post_code' => 'required|string|max:20',
-            'location' => 'required|string|max:255',
-            'street' => 'required|string|max:255',
-            'country' => 'required|string|max:100',
+            // 'house_number' => 'required|string|max:10',
+            // 'post_code' => 'required|string|max:20',
+            // 'location' => 'required|string|max:255',
+            // 'street' => 'required|string|max:255',
+            // 'country' => 'required|string|max:100',
         ]);
 
         if ($validator->fails()) {
